@@ -60,8 +60,8 @@ class TradingBot:
 
     def calculate_rsi(self, close_prices, period=14):
         delta = close_prices.diff()
-        gain = np.where(delta > 0, delta, 0).rolling(window=period).mean()
-        loss = np.where(delta < 0, -delta, 0).rolling(window=period).mean()
+        gain = pd.Series(np.where(delta > 0, delta, 0), index=close_prices.index).rolling(window=period).mean()
+        loss = pd.Series(np.where(delta < 0, -delta, 0), index=close_prices.index).rolling(window=period).mean()
         rs = gain / loss
         return 100 - (100 / (1 + rs))
 
